@@ -95,3 +95,108 @@ For example, variableInterestRate(200000, 0.04, 30) should console.log:
 
 
 /* 🏡  Refactor your `variableInterestRate()` function to accept an array of interest rates (make sure to copy and paste as to not lose your work!) */
+
+
+let principal = 200000;
+let interestRate = 0.05;
+let years = 30;
+
+var name = 'Jake';
+
+// M = monthlyRate
+
+let monthlyInterestRate = interestRate/12;
+console.log('Monthly Interest Rate');
+console.log(monthlyInterestRate);
+
+let periods = years*12;
+console.log('Number of monthly payments');
+console.log(periods);
+
+// M = P [ I ( 1 + I )^N ] / [ ( 1 + I )^N – 1 ]
+
+let monthlyRate = principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, periods)/(Math.pow(1 + monthlyInterestRate, periods) - 1);
+
+
+console.log('Monthly Payment')
+console.log(monthlyRate);
+
+function mCalculator() {
+  return name + ", your monthly rate is $" + (Math.round(monthlyRate * 100)/100);
+} 
+console.log(mCalculator());
+
+
+function mortgageCalculator(principal, interestRate, years) {
+  return principal * (interestRate/12) * Math.pow(1 + (interestRate/12), (years*12))/(Math.pow(1 + (interestRate/12), (years*12)) - 1);
+}
+
+
+// function mortgageCalculator(principal, interestRate, years) {
+//   return principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, periods)/(Math.pow(1 + monthlyInterestRate, periods) - 1);
+// }
+
+
+
+// console.log('Monthly Payment, from parameters')
+// console.log(mortgageCalculator(200000, 0.05, 30));
+// console.log('verifying change of 1st parameter works');
+// console.log(mortgageCalculator(100000, 0.05, 30));
+// console.log('verifying change of 2nd parameter works');
+// console.log(mortgageCalculator(200000, 0.06, 30));
+// console.log('verifying change of 3rd parameter works');
+// console.log(mortgageCalculator(200000, 0.05, 20));
+
+//Adding 4th parameter, creditScore 
+
+console.log('Below is the change due to change in interestRate from creditScore');
+
+function mortgageCalculator(principal, interestRate, years, creditScore) {
+  // return principal * (interestRate/12) * Math.pow(1 + (interestRate/12), (years*12))/(Math.pow(1 + (interestRate/12), (years*12)) - 1);
+
+    if (creditScore > 740) {
+      interestRate = interestRate - (interestRate*0.005);
+      console.log('This is the reduced interestRate');
+      console.log(interestRate + " APR");
+      return principal * (interestRate/12) * Math.pow(1 + (interestRate/12), (years*12))/(Math.pow(1 + (interestRate/12), (years*12)) - 1);
+
+    } if (creditScore < 660) {
+      interestRate = interestRate + (interestRate*0.005);
+      console.log('This is the increased interestRate');
+      console.log(interestRate + " APR");
+
+      return principal * (interestRate/12) * Math.pow(1 + (interestRate/12), (years*12))/(Math.pow(1 + (interestRate/12), (years*12)) - 1);
+
+    } if (creditScore >=660 || creditScore <=740) {
+      interestRate = interestRate; 
+      console.log('This is the unchanged interestRate between 660 and 740');
+      console.log(interestRate + " APR");
+
+      return principal * (interestRate/12) * Math.pow(1 + (interestRate/12), (years*12))/(Math.pow(1 + (interestRate/12), (years*12)) - 1);
+    }
+}
+
+console.log('verifying that greater than 740 works');
+console.log("$" + Math.round(mortgageCalculator(200000, 0.05, 30, 741)*100)/100 + " monthly payment");
+console.log('verifying that less than 660 works');
+console.log("$" + Math.round(mortgageCalculator(200000, 0.05, 30, 659)*100)/100 + " monthly payment");
+console.log('verifying that between 660 and 740 works with edges of parameters');
+console.log("$" + Math.round(mortgageCalculator(200000, 0.05, 30, 660)*100)/100 + " monthly payment");
+console.log('This last one should be the same as the one above at the other edge of the parameter');
+console.log("$" + Math.round(mortgageCalculator(200000, 0.05, 30, 740)*100)/100 + " monthly payment");
+
+
+function variableInterestRate(principal, interestRate, years) {
+      interestRate = interestRate - 0.02;
+    
+    for ( let i = 0; i < 11; i++ ) {
+      // console.log("InterestRate before " + interestRate);
+      let payment = principal * (interestRate/12) * Math.pow(1 + (interestRate/12), (years*12))/(Math.pow(1 + (interestRate/12), (years*12)) - 1);
+      console.log(name + ", with an interest rate of " + Math.round(interestRate*1000)/10 + "%, your monthly payment is $" + Math.round(payment));
+      interestRate = interestRate + 0.005;
+      // console.log("InterestRate after " + interestRate);
+    }
+} 
+
+variableInterestRate(200000, 0.05,30);
+variableInterestRate(300000, 0.03, 20);
